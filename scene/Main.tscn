@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://qvp00uukrshb"]
+
+[ext_resource type="Texture2D" uid="uid://birgkeghp3ga8" path="res://Asset/Tilesets/Crops Info.png" id="1_rv5u5"]
+[ext_resource type="PackedScene" uid="uid://c6pfful4gwugj" path="res://scene/Player.tscn" id="2_8kekn"]
+
+[node name="Main" type="Node2D"]
+
+[node name="CropsInfo" type="Sprite2D" parent="."]
+position = Vector2(86, 30)
+texture = ExtResource("1_rv5u5")
+
+[node name="Player" parent="." instance=ExtResource("2_8kekn")]
