@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://c6pfful4gwugj"]
+[gd_scene load_steps=40 format=3 uid="uid://c6pfful4gwugj"]
 
 [ext_resource type="Script" path="res://code/Player.gd" id="1_bdehg"]
 [ext_resource type="Texture2D" uid="uid://cw8kvlinfqy6b" path="res://Asset/Characters/Basic Charakter Spritesheet.png" id="1_umdvd"]
@@ -50,6 +50,7 @@ tracks/2/keys = {
 [sub_resource type="Animation" id="Animation_lfocw"]
 resource_name = "Hoe_down"
 length = 0.5
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -93,14 +94,11 @@ tracks/3/path = NodePath(".")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
-"method": &"check_hoe"
-}, {
-"args": [],
-"method": &"check_hoe"
+"method": &"hoe_animation_finished"
 }]
 }
 
@@ -150,14 +148,11 @@ tracks/3/path = NodePath(".")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
-"method": &"check_hoe"
-}, {
-"args": [],
-"method": &"check_hoe"
+"method": &"hoe_animation_finished"
 }]
 }
 
@@ -207,14 +202,11 @@ tracks/3/path = NodePath(".")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
-"method": &"check_hoe"
-}, {
-"args": [],
-"method": &"check_hoe"
+"method": &"hoe_animation_finished"
 }]
 }
 
@@ -264,14 +256,11 @@ tracks/3/path = NodePath(".")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
-"method": &"check_hoe"
-}, {
-"args": [],
-"method": &"check_hoe"
+"method": &"hoe_animation_finished"
 }]
 }
 
@@ -702,41 +691,23 @@ blend_mode = 1
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2usv6"]
-advance_mode = 2
-advance_condition = &"Run"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k66rb"]
-advance_mode = 2
-advance_condition = &"Idle"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_okawf"]
-advance_mode = 2
-advance_condition = &"Hoe"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dl5dh"]
-switch_mode = 2
-advance_mode = 2
-advance_condition = &"Idle"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fb13c"]
-advance_mode = 2
-advance_condition = &"Hoe"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yh6at"]
-switch_mode = 2
-advance_mode = 2
-advance_condition = &"Run"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_poqvt"]
 states/End/position = Vector2(878.667, 86.6667)
 states/Hoe/node = SubResource("AnimationNodeBlendSpace2D_0jvau")
-states/Hoe/position = Vector2(489.333, 103.333)
+states/Hoe/position = Vector2(516, 58.5928)
 states/Idle/node = SubResource("AnimationNodeBlendSpace2D_ce6fr")
 states/Idle/position = Vector2(364.296, 58.4445)
 states/Start/position = Vector2(252, 58.8148)
 states/run/node = SubResource("AnimationNodeBlendSpace2D_4nwwa")
 states/run/position = Vector2(362.667, 147.333)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_pjxl7"), "Idle", "run", SubResource("AnimationNodeStateMachineTransition_2usv6"), "run", "Idle", SubResource("AnimationNodeStateMachineTransition_k66rb"), "Idle", "Hoe", SubResource("AnimationNodeStateMachineTransition_okawf"), "Hoe", "Idle", SubResource("AnimationNodeStateMachineTransition_dl5dh"), "run", "Hoe", SubResource("AnimationNodeStateMachineTransition_fb13c"), "Hoe", "run", SubResource("AnimationNodeStateMachineTransition_yh6at")]
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_pjxl7"), "Idle", "run", SubResource("AnimationNodeStateMachineTransition_2usv6"), "run", "Idle", SubResource("AnimationNodeStateMachineTransition_k66rb"), "Idle", "Hoe", SubResource("AnimationNodeStateMachineTransition_okawf"), "Hoe", "Idle", SubResource("AnimationNodeStateMachineTransition_dl5dh")]
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_bdehg")
@@ -770,10 +741,8 @@ libraries = {
 "": SubResource("AnimationLibrary_sppmn")
 }
 tree_root = SubResource("AnimationNodeStateMachine_poqvt")
+advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")
-parameters/conditions/Hoe = false
-parameters/conditions/Idle = false
-parameters/conditions/Run = false
 parameters/Hoe/blend_position = Vector2(0, 0)
 parameters/Idle/blend_position = Vector2(-0.0139211, 0.382353)
 parameters/run/blend_position = Vector2(-0.0510441, -0.841177)

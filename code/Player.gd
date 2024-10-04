@@ -11,31 +11,37 @@ var input_vector = Vector2.ZERO
 var state : int
 var using_hoe : bool = false
 
+
 func _ready():
 	animation_player.active = true
 
 func _process(delta):
-	update_animation()
+	pass
 
 func _physics_process(delta):
 	match state:
 		moving:
 			player_movement(delta)
+			update_animation()
 			
 		hoe:
-			pass
-	
+			hoe_animation()
 
 
 func player_movement(delta):
 	input_vector = get_input()
 	
 	if input_vector:
+		
 		velocity = velocity.move_toward(input_vector * Max_speed, Acceleration * delta)
 	else:
+		
 		velocity = velocity.move_toward(Vector2.ZERO,Friction * delta)
 	
 	move_and_slide()
+	
+	if Input.is_action_just_pressed("Hoe"):
+		state = hoe
 
 #getting player input
 func get_input():
@@ -45,27 +51,17 @@ func get_input():
 
 #handle the animation of the player
 func update_animation():
-	if velocity == Vector2.ZERO:
-		animation_player["parameters/conditions/Idle"] = true
-		animation_player["parameters/conditions/Run"] = false
-	else:
-		animation_player["parameters/conditions/Idle"] = false
-		animation_player["parameters/conditions/Run"] = true
-	if Input.is_action_just_pressed("Hoe") and state == moving:
-		using_hoe = true
-		animation_player["parameters/conditions/Hoe"] = true
-	else:
-		animation_player["parameters/conditions/Hoe"] = false
-	
 	if input_vector != Vector2.ZERO:
-		animation_player["parameters/Idle/blend_position"] = input_vector
-		animation_player["parameters/run/blend_position"] = input_vector
-		animation_player["parameters/Hoe/blend_position"] = input_vector
+		animation_player.set("parameters/Idle/blend_position", input_vector)
+		animation_player.set("parameters/Hoe/blend_position", input_vector)
+		animation_player.set("parameters/run/blend_position", input_vector)
+		animation_player.get("parameters/playback").travel("run")
+	else:
+		animation_player.get("parameters/playback").travel("Idle")
 
-func check_hoe():
-	if using_hoe:
-		state = hoe
-		using_hoe = false
-		return
+func hoe_animation():
+	velocity = Vector2.ZERO
+	animation_player.get("parameters/playback").travel("Hoe")
+
+func hoe_animation_finished():
 	state = moving
-	return
