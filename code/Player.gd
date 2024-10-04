@@ -2,9 +2,9 @@ extends CharacterBody2D
 
 @onready var animation_player = get_node("AnimationTree")
 
-const Acceleration = 1000
-const Max_speed = 125
-const Friction = 800
+const Acceleration = 700
+const Max_speed = 70
+const Friction = 350
 
 enum {moving, hoe}
 var input_vector = Vector2.ZERO
